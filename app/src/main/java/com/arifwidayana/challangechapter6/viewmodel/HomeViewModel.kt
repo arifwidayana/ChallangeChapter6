@@ -1,5 +1,7 @@
 package com.arifwidayana.challangechapter6.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeViewModel: ViewModel() {
+class HomeViewModel(application: Application): AndroidViewModel(application) {
     val status: MutableLiveData<String> = MutableLiveData()
     val loading: MutableLiveData<Boolean> = MutableLiveData()
 //    val getPref = repo.getSession()
@@ -50,7 +52,7 @@ class HomeViewModel: ViewModel() {
 
     private fun nowPlayingMovies() {
         loading.postValue(true)
-        ApiClient.instance.getNowPlayingMovies().enqueue(object : Callback<ListPlayingMovie>{
+        ApiClient.getInstance(getApplication()).getNowPlayingMovies().enqueue(object : Callback<ListPlayingMovie>{
             override fun onResponse(
                 call: Call<ListPlayingMovie>,
                 response: Response<ListPlayingMovie>
@@ -70,7 +72,7 @@ class HomeViewModel: ViewModel() {
 
     private fun popularMovies() {
         loading.postValue(true)
-        ApiClient.instance.getPopularMovies().enqueue(object : Callback<ListPlayingMovie>{
+        ApiClient.getInstance(getApplication()).getPopularMovies().enqueue(object : Callback<ListPlayingMovie>{
             override fun onResponse(call: Call<ListPlayingMovie>, response: Response<ListPlayingMovie>) {
                 loading.postValue(false)
                 when {
@@ -87,7 +89,7 @@ class HomeViewModel: ViewModel() {
 
     private fun upComingMovies() {
         loading.postValue(true)
-        ApiClient.instance.getUpComingMovies().enqueue(object : Callback<ListPlayingMovie>{
+        ApiClient.getInstance(getApplication()).getUpComingMovies().enqueue(object : Callback<ListPlayingMovie>{
             override fun onResponse(call: Call<ListPlayingMovie>, response: Response<ListPlayingMovie>) {
                 loading.postValue(false)
                 when {
@@ -104,7 +106,7 @@ class HomeViewModel: ViewModel() {
 
     private fun topRatedMovies() {
         loading.postValue(true)
-        ApiClient.instance.getTopRatedMovies().enqueue(object : Callback<ListPlayingMovie>{
+        ApiClient.getInstance(getApplication()).getTopRatedMovies().enqueue(object : Callback<ListPlayingMovie>{
             override fun onResponse(call: Call<ListPlayingMovie>, response: Response<ListPlayingMovie>) {
                 loading.postValue(false)
                 when {
@@ -121,7 +123,7 @@ class HomeViewModel: ViewModel() {
 
     fun detailMovies(id: Int?) {
         loading.postValue(true)
-        ApiClient.instance.getDetailMovies(id).enqueue(object : Callback<DetailsMovie>{
+        ApiClient.getInstance(getApplication()).getDetailMovies(id).enqueue(object : Callback<DetailsMovie>{
             override fun onResponse(call: Call<DetailsMovie>, response: Response<DetailsMovie>) {
                 loading.postValue(false)
                 when {
